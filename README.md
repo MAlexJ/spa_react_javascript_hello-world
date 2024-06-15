@@ -1,11 +1,48 @@
 # React/JavaScript: Basic User Authentication Code Sample
 
-This JavaScript code sample demonstrates **how to implement user authentication** in React applications using Auth0. This React code sample builds the Single-Page Application (SPA) using the React Router 6 library.
+configuration
+app: ["Full-Stack Security: React/JavaScript + Spring WebFlux/Java](https://developer.auth0.com/resources/code-samples/full-stack/hello-world/basic-access-control/spa/react-javascript/spring-webflux-java)
 
-This code sample is part of the ["Auth0 Developer Resources"](https://developer.auth0.com/resources), a place where you can explore the authentication and authorization features of the Auth0 Identity Platform.
+### Springboot project setup
 
-Visit the ["React/JavaScript + React Router 6 Code Sample: User Authentication For Basic Apps"](https://developer.auth0.com/resources/code-samples/spa/react/basic-authentication) page for instructions on how to configure and run this code sample and how to integrate it with an API server of your choice to [create a full-stack code sample](https://developer.auth0.com/resources/code-samples/full-stack/hello-world/basic-access-control/spa).
+create .env file with properties:
 
-## Why Use Auth0?
+```
+REACT_APP_AUTH0_DOMAIN=.....dev......
+REACT_APP_AUTH0_CLIENT_ID=....ID.....
+REACT_APP_AUTH0_CALLBACK_URL=....my.site.com/callback
+REACT_APP_API_SERVER_URL=....my.site.com
+REACT_APP_AUTH0_AUDIENCE=....my.site.com
+```
 
-Auth0 is a flexible drop-in solution to add authentication and authorization services to your applications. Your team and organization can avoid the cost, time, and risk that come with building your own solution to authenticate and authorize users. We offer tons of guidance and SDKs for you to get started and [integrate Auth0 into your stack easily](https://developer.auth0.com/resources/code-samples/full-stack).
+### Docker
+
+info: https://www.youtube.com/watch?v=dfTco9hmXEM&t=364s
+
+command:
+
+```
+docker build -t react-example . 
+docker run -d -p 3000:3000 --name react-example-container react-example:latest
+```
+
+### Hosting React app
+
+Render is a cloud platform that offers a variety of services for developers, including hosting for web applications,
+databases, and static sites. Render aims to simplify the process of deploying and scaling applications by providing a
+user-friendly interface and seamless integration with popular development tools.
+
+Deploy for Free - https://render.com/ <br>
+You can deploy instances of some Render services <br>
+link: https://docs.render.com/free
+
+Deploying a Spring Boot Application with Docker Image on Render <br>
+tutorial: https://medium.com/@nithinsudarsan/deploying-a-spring-boot-application-with-docker-image-on-render-com-9a87f5ce5f72
+
+### UptimeRobot: Monitor anything
+
+UptimeRobot is a website monitoring service that checks the status of your websites, servers, and other online services
+at regular intervals. It notifies you if any of your monitored services go down, helping you to quickly address any
+issues and minimize downtime.
+
+link: https://uptimerobot.com/ <br>
