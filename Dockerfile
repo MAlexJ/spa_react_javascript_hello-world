@@ -11,6 +11,6 @@ COPY . .
 # Build the app
 RUN npm run build
 # Expose the port
-EXPOSE 3000
+EXPOSE 4040
 # Run the app
-CMD ["npm", "start"]
+CMD ["cross-env", "PORT=4040", "react-scripts", "start"]
