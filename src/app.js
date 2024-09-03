@@ -10,6 +10,7 @@ import { NotFoundPage } from "./pages/not-found-page";
 import { ProfilePage } from "./pages/profile-page";
 import { ProtectedPage } from "./pages/protected-page";
 import { PublicPage } from "./pages/public-page";
+import {CalendarPage} from "./pages/calendar-page";
 
 export const App = () => {
   const { isLoading } = useAuth0();
@@ -30,6 +31,7 @@ export const App = () => {
         element={<AuthenticationGuard component={ProfilePage} />}
       />
       <Route path="/public" element={<PublicPage />} />
+      <Route path="/calendar" element={<CalendarPage />} />
       <Route
         path="/protected"
         element={<AuthenticationGuard component={ProtectedPage} />}

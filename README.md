@@ -46,3 +46,27 @@ at regular intervals. It notifies you if any of your monitored services go down,
 issues and minimize downtime.
 
 link: https://uptimerobot.com/ <br>
+
+### Calendar
+
+link: https://api.daypilot.org/
+
+#### DayPilot.Calendar.weekStarts
+
+The first day of week in the week view can be set using the weekStarts property.
+
+Possible values:
+a number representing the day of week:
+
+```
+(0 = Sunday, 1 = Monday, 2 = Tuesday, 3 = Wednesday, 4 = Thursday, 5 = Friday, 6 =
+Saturday) "Auto" (default)
+```
+
+The automatic mode uses the current locale to determine the first day of week.
+
+link: https://api.daypilot.org/daypilot-calendar-weekstarts/
+
+#### Time Format
+
+timeFormat
