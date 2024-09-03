@@ -70,3 +70,5 @@ link: https://api.daypilot.org/daypilot-calendar-weekstarts/
 #### Time Format
 
 timeFormat
+
+https://api.daypilot.org/daypilot-date-parse/

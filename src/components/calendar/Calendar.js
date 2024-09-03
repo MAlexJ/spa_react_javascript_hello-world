@@ -15,7 +15,8 @@ const Calendar = () => {
 
     const onTimeRangeSelected = async (args) => {
         const dp = args.control;
-        const modal = await DayPilot.Modal.prompt("Create a new event:", "Event 1");
+        const modal = await DayPilot.Modal.prompt("Create a new event:",  //
+            {theme: "modal_rounded"});
         dp.clearSelection();
         if (modal.canceled) {
             return;
@@ -25,8 +26,11 @@ const Calendar = () => {
             start: args.start, end: args.end, text: modal.result
         };
 
+        if (event.text === '') {
+            return;
+        }
+
         const createEvents = async (event) => {
-            console.log(event);
             const {data, error} = await apiCreateEvents(event);
         }
 
