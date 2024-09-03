@@ -38,12 +38,8 @@ const Calendar = () => {
     };
 
     useEffect(() => {
-        let isMounted = true;
         const findEvents = async () => {
             const {data, error} = await apiFindEvents();
-            if (!isMounted) {
-                return;
-            }
 
             if (data) {
                 return Object.keys(data).map(index => {
@@ -65,11 +61,6 @@ const Calendar = () => {
         };
 
         findEvents().then(jsonArray => setEvents(jsonArray))
-
-        return () => {
-            isMounted = false;
-        };
-
     }, []);
 
     return (<div className={"container"}>
