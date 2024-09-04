@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {DayPilot, DayPilotCalendar, DayPilotMonth, DayPilotNavigator} from "@daypilot/daypilot-lite-react";
-import {apiCreateEvents, apiFindEvents} from "../../services/message.service";
+import {apiCreateEvents, apiDeleteEvents, apiFindEvents, apiPartialUpdate} from "../../services/message.service";
 import "./Calendar.css";
 
 const Calendar = () => {
@@ -32,10 +32,65 @@ const Calendar = () => {
 
         const createEvents = async (event) => {
             const {data, error} = await apiCreateEvents(event);
+            return {data, error};
         }
 
-        createEvents(event).then(resp => setEvents([...events, event]));
+        createEvents(event).then((resp) => {
+            let event = resp.data;
+            let mapJsonToDayPilotEvent = (json) => {
+                const dateFormat: string = "yyyy-MM-ddTHH:mm:ss";
+                let map: Map = new Map(Object.entries(json));
+                let id: number = map.get('id');
+                let text: string = map.get('text');
+                let start: string = map.get('start');
+                let end: string = map.get('end');
+                return {
+                    id: id,
+                    text: text,
+                    start: DayPilot.Date.parse(start, dateFormat),
+                    end: DayPilot.Date.parse(end, dateFormat)
+                }
+            };
+            setEvents([...events, mapJsonToDayPilotEvent(event)])
+        });
     };
+
+    const onEventMoveOrResizeHandler = async (args) => {
+        let id: number = args.e.data.id;
+        let startDate: string = args.newStart.value;
+        let endDate: string = args.newEnd.value;
+
+        let mapDateToJson = (startDate, endDate) => {
+            return {
+                start: startDate, end: endDate
+            }
+        };
+
+        const partialUpdate = async (id, partialEventUpdate) => {
+            const {data, error} = await apiPartialUpdate(id, partialEventUpdate);
+            return {data, error};
+        }
+
+        partialUpdate(id, mapDateToJson(startDate, endDate)).then(resp => {
+            console.log("RESPONSE: Path event by id", resp.data);
+        })
+    }
+
+    const onEventDeleteHandler = async (args) => {
+        let id: number = args.e.data.id;
+        console.log("Delete event by id", id);
+
+
+        const deleteEvents = async (id) => {
+            const {data, error} = await apiDeleteEvents(id);
+            return {data, error};
+        };
+
+        deleteEvents(id).then((resp) => {
+            console.log("RESPONSE: Delete event by id", resp.data);
+        });
+
+    }
 
     useEffect(() => {
         const findEvents = async () => {
@@ -90,6 +145,9 @@ const Calendar = () => {
                 eventDeleteHandling={"Update"}
                 startDate={startDate}
                 timeFormat={"Clock24Hours"}
+                onEventMove={onEventMoveOrResizeHandler}
+                onEventDelete={onEventDeleteHandler}
+                onEventResize={onEventMoveOrResizeHandler}
                 events={events}
                 visible={view === "Day"}
                 durationBarVisible={false}
@@ -99,6 +157,9 @@ const Calendar = () => {
             <DayPilotCalendar
                 viewType={"Week"}
                 eventDeleteHandling={"Update"}
+                onEventMove={onEventMoveOrResizeHandler}
+                onEventDelete={onEventDeleteHandler}
+                onEventResize={onEventMoveOrResizeHandler}
                 weekStarts={1}
                 timeFormat={"Clock24Hours"}
                 startDate={startDate}
@@ -111,6 +172,9 @@ const Calendar = () => {
             <DayPilotMonth
                 startDate={startDate}
                 eventDeleteHandling={"Update"}
+                onEventMove={onEventMoveOrResizeHandler}
+                onEventDelete={onEventDeleteHandler}
+                onEventResize={onEventMoveOrResizeHandler}
                 weekStarts={1}
                 events={events}
                 visible={view === "Month"}

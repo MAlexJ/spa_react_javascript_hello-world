@@ -58,6 +58,35 @@ export const apiFindEvents = async () => {
     };
 };
 
+
+export const apiDeleteEvents = async (id) => {
+    const config = {
+        url: `${apiServerUrl}/v1/events/${id}`, method: "DELETE"
+    };
+
+    const {data, error} = await callExternalApi({config});
+
+    return {
+        data: data || null, error,
+    };
+};
+
+
+export const apiPartialUpdate = async (id, partialEventUpdate) => {
+    const config = {
+        url: `${apiServerUrl}/v1/events/${id}`,
+        method: "PATCH",
+        headers: {"content-type": "application/json"},
+        data: partialEventUpdate
+    };
+
+    const {data, error} = await callExternalApi({config});
+
+    return {
+        data: data || null, error,
+    };
+};
+
 export const apiCreateEvents = async (event) => {
 
     const config = {
