@@ -46,7 +46,7 @@ export const getAdminResource = async () => {
 
 export const apiFindEvents = async () => {
     const config = {
-        url: `${apiServerUrl}/v1/events`, method: "GET", headers: {
+        url: `${apiServerUrl}/api/v1/events`, method: "GET", headers: {
             "content-type": "application/json",
         },
     };
@@ -61,7 +61,7 @@ export const apiFindEvents = async () => {
 
 export const apiDeleteEvents = async (id) => {
     const config = {
-        url: `${apiServerUrl}/v1/events/${id}`, method: "DELETE"
+        url: `${apiServerUrl}/api/v1/events/${id}`, method: "DELETE"
     };
 
     const {data, error} = await callExternalApi({config});
@@ -74,7 +74,7 @@ export const apiDeleteEvents = async (id) => {
 
 export const apiPartialUpdate = async (id, partialEventUpdate) => {
     const config = {
-        url: `${apiServerUrl}/v1/events/${id}`,
+        url: `${apiServerUrl}/api/v1/events/${id}`,
         method: "PATCH",
         headers: {"content-type": "application/json"},
         data: partialEventUpdate
@@ -90,7 +90,7 @@ export const apiPartialUpdate = async (id, partialEventUpdate) => {
 export const apiCreateEvents = async (event) => {
 
     const config = {
-        url: `${apiServerUrl}/v1/events`, method: "POST", headers: {
+        url: `${apiServerUrl}/api/v1/events`, method: "POST", headers: {
             "content-type": "application/json",
         }, data: event
     };

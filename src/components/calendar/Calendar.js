@@ -15,28 +15,43 @@ const Calendar = () => {
 
     const onTimeRangeSelected = async (args) => {
         const dp = args.control;
-        const modal = await DayPilot.Modal.prompt("Create a new event:",  //
-            {theme: "modal_rounded"});
-        dp.clearSelection();
-        if (modal.canceled) {
-            return;
-        }
 
-        const event = {
-            start: args.start, end: args.end, text: modal.result
+        let resources = [{name: "Resource A", id: "A"}, {name: "Resource B", id: "B"}, {name: "Resource C", id: "C"},];
+
+        let form = [
+            {name: "Start", id: "start", type: "date"},
+            {name: "End", id: "end", type: "date"}, {
+            name: "Text", id: "text"
+        }, {name: "Resource", id: "resource", options: resources},];
+
+        let data = {
+            text: "Event 1", start: "2020-11-01", end: "2020-11-02", resource: "B"
         };
 
-        if (event.text === '') {
-            return;
-        }
+        const modal = DayPilot.Modal.form(form, {
+            theme: "modal_rounded", //
+            okText: "Ok!", //
+            onClose: () => {
+                onCloseHandler(args)
+            }, //
+            onShow: () => {
+                onShowHandler(args)
+            }
+        });
 
-        const createEvents = async (event) => {
-            const {data, error} = await apiCreateEvents(event);
-            return {data, error};
-        }
+        dp.clearSelection();
 
-        createEvents(event).then((resp) => {
-            let event = resp.data;
+        modal.then(modalArgs => {
+            console.log("modalArgs", modalArgs);
+            console.log("modalArgs canceled", modalArgs.canceled);
+            if (modalArgs.canceled) {
+                return;
+            }
+            // todo: event or   modalArgs.result
+            return createEvents(event);
+        }).then(response => {
+            let event = response.data;
+            console.log("RESPONSE: create event", event);
             let mapJsonToDayPilotEvent = (json) => {
                 const dateFormat: string = "yyyy-MM-ddTHH:mm:ss";
                 let map: Map = new Map(Object.entries(json));
@@ -51,8 +66,26 @@ const Calendar = () => {
                     end: DayPilot.Date.parse(end, dateFormat)
                 }
             };
-            setEvents([...events, mapJsonToDayPilotEvent(event)])
-        });
+            return mapJsonToDayPilotEvent(event);
+        }).then(mappedEvent => {
+            setEvents([...events, mappedEvent])
+        })
+
+
+        const event = {
+            start: args.start, end: args.end, text: args.text
+        };
+
+        if (event.text === '') {
+            return;
+        }
+
+        const createEvents = async (event) => {
+            const {data, error} = await apiCreateEvents(event);
+            return {data, error};
+        }
+
+
     };
 
     const onEventMoveOrResizeHandler = async (args) => {
@@ -90,6 +123,26 @@ const Calendar = () => {
             console.log("RESPONSE: Delete event by id", resp.data);
         });
 
+    }
+
+    const okTextHandler = async (args) => {
+        console.log("okTextHandler", args);
+    }
+
+    const onShowHandler = async (args) => {
+        console.log("onShowHandler", args);
+    }
+
+    const onCloseHandler = async (args) => {
+        console.log("onCloseHandler", args);
+    }
+
+    const onEventClickHandler = async (args) => {
+        console.log("onEventClick", args);
+    }
+
+    const onEventRightClickHandler = async (args) => {
+        console.log("onEventRightClickHandler", args);
     }
 
     useEffect(() => {
@@ -160,6 +213,8 @@ const Calendar = () => {
                 onEventMove={onEventMoveOrResizeHandler}
                 onEventDelete={onEventDeleteHandler}
                 onEventResize={onEventMoveOrResizeHandler}
+                onEventClick={onEventClickHandler}
+                onEventRightClick={onEventRightClickHandler}
                 weekStarts={1}
                 timeFormat={"Clock24Hours"}
                 startDate={startDate}
