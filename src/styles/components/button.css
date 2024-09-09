@@ -115,6 +115,29 @@
   user-select: none;
 }
 
+.button__cancel {
+  min-width: 8.4rem;
+
+  border: 0.1rem solid var(--white);
+  color: var(--white);
+  background-color: rgb(255, 0, 0);
+  width: 50%;
+  font-size: 1.6rem;
+
+  margin-right: 1.6rem;
+
+  font-style: normal;
+  font-weight: 500;
+  line-height: 3.2rem;
+  padding: 0.8rem 0;
+  border-radius: 0.8rem;
+  text-align: center;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.button__back:last-child,
 .button__login:last-child,
 .button__logout:last-child,
 .button__sign-up:last-child {
@@ -122,6 +145,7 @@
 }
 
 @media only screen and (min-width: 641px) {
+  .button__cancel,
   .button__login,
   .button__logout,
   .button__sign-up {

@@ -72,3 +72,15 @@ link: https://api.daypilot.org/daypilot-calendar-weekstarts/
 timeFormat
 
 https://api.daypilot.org/daypilot-date-parse/
+
+### React
+
+#### hook: useLocation
+
+How to Pass Data Across Routes with React Router
+
+URL parameters are a good way of passing data from page to page in a React application.
+But what if you don't want that data to show in your URL?
+Here's a great way to achieve that using the useLocation hook that React Router provides.
+
+link: https://dev.to/olabisi09/how-to-pass-data-across-routes-with-react-router-53jm

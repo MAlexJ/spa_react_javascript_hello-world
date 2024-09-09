@@ -2,8 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {DayPilot, DayPilotCalendar, DayPilotMonth, DayPilotNavigator} from "@daypilot/daypilot-lite-react";
 import {apiCreateEvents, apiDeleteEvents, apiFindEvents, apiPartialUpdate} from "../../services/message.service";
 import "./Calendar.css";
+import { useNavigate } from "react-router-dom";
 
 const Calendar = () => {
+
+    const navigate = useNavigate()
 
     const [view, setView] = useState("Week");
     const [startDate, setStartDate] = useState(DayPilot.Date.today());
@@ -16,22 +19,20 @@ const Calendar = () => {
     const onTimeRangeSelected = async (args) => {
         const dp = args.control;
 
-        let resources = [{name: "Resource A", id: "A"}, {name: "Resource B", id: "B"}, {name: "Resource C", id: "C"},];
+        const form = [ //
+            {name: "First name", id: "firstNane"}, //
+            {name: "Middle name", id: "middleName"}, //
+            {name: "Second name", id: "secondName"} //
+        ];
 
-        let form = [
-            {name: "Start", id: "start", type: "date"},
-            {name: "End", id: "end", type: "date"}, {
-            name: "Text", id: "text"
-        }, {name: "Resource", id: "resource", options: resources},];
-
-        let data = {
-            text: "Event 1", start: "2020-11-01", end: "2020-11-02", resource: "B"
+        const data = {
+            firstNane: "", middleName: "", secondName: ""
         };
 
-        const modal = DayPilot.Modal.form(form, {
+        const modal = DayPilot.Modal.form(form, data, {
             theme: "modal_rounded", //
             okText: "Ok!", //
-            onClose: () => {
+            cancelText: "Cancel!", top: 100, onClose: () => {
                 onCloseHandler(args)
             }, //
             onShow: () => {
@@ -47,6 +48,8 @@ const Calendar = () => {
             if (modalArgs.canceled) {
                 return;
             }
+
+            navigate("/event/create");
             // todo: event or   modalArgs.result
             return createEvents(event);
         }).then(response => {
@@ -73,7 +76,7 @@ const Calendar = () => {
 
 
         const event = {
-            start: args.start, end: args.end, text: args.text
+            start: args.start, end: DayPilot.Date.parse(args.end, "yyyy-MM-ddTHH:mm:ss").addMinutes(30), text: args.text
         };
 
         if (event.text === '') {
@@ -174,6 +177,7 @@ const Calendar = () => {
     return (<div className={"container"}>
         <div className={"navigator"}>
             <DayPilotNavigator
+                // locale={'ru-ru'}
                 selectMode={view}
                 showMonths={2}
                 skipMonths={2}
@@ -196,6 +200,7 @@ const Calendar = () => {
             <DayPilotCalendar
                 viewType={"Day"}
                 eventDeleteHandling={"Update"}
+                headerDateFormat={"dd.MM.yyyy"}
                 startDate={startDate}
                 timeFormat={"Clock24Hours"}
                 onEventMove={onEventMoveOrResizeHandler}
@@ -210,6 +215,7 @@ const Calendar = () => {
             <DayPilotCalendar
                 viewType={"Week"}
                 eventDeleteHandling={"Update"}
+                headerDateFormat={"dd.MM.yyyy"}
                 onEventMove={onEventMoveOrResizeHandler}
                 onEventDelete={onEventDeleteHandler}
                 onEventResize={onEventMoveOrResizeHandler}
