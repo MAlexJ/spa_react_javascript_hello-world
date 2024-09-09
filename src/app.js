@@ -12,7 +12,6 @@ import {ProtectedPage} from "./pages/protected-page";
 import {PublicPage} from "./pages/public-page";
 import {CalendarPage} from "./pages/calendar-page";
 import {CreateEventPage} from "./pages/create-event-page";
-import {AddClientPage} from "./pages/add-client-page";
 import {CreateClientPage} from "./pages/create-client-page";
 import {ConfirmEventPage} from "./pages/confirm-event-page";
 import {SearchClientPage} from "./pages/search-client-page";
@@ -33,9 +32,8 @@ export const App = () => {
             element={<AuthenticationGuard component={ProfilePage}/>}
         />
         <Route path="/public" element={<PublicPage/>}/>
-        <Route path="/event/create" element={<CreateEventPage/>}/>
         <Route path="/event/confirm" element={<ConfirmEventPage/>}/>
-        <Route path="/client/add" element={<AddClientPage/>}/>
+        <Route path="/event/create" element={<CreateEventPage/>}/>
         <Route path="/client/create" element={<CreateClientPage/>}/>
         <Route path="/client/search" element={<SearchClientPage/>}/>
         <Route path="/calendar" element={<CalendarPage/>}/>

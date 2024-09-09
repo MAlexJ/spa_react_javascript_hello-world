@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {DayPilot, DayPilotCalendar, DayPilotMonth, DayPilotNavigator} from "@daypilot/daypilot-lite-react";
-import {apiCreateEvents, apiDeleteEvents, apiFindEvents, apiPartialUpdate} from "../../services/message.service";
+import {apiDeleteEvents, apiFindEvents, apiPartialUpdate} from "../../services/message.service";
 import "./Calendar.css";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 const Calendar = () => {
 
@@ -19,74 +19,60 @@ const Calendar = () => {
     const onTimeRangeSelected = async (args) => {
         const dp = args.control;
 
-        const form = [ //
-            {name: "First name", id: "firstNane"}, //
-            {name: "Middle name", id: "middleName"}, //
-            {name: "Second name", id: "secondName"} //
-        ];
+        dp.clearSelection();
 
-        const data = {
-            firstNane: "", middleName: "", secondName: ""
-        };
-
-        const modal = DayPilot.Modal.form(form, data, {
-            theme: "modal_rounded", //
-            okText: "Ok!", //
-            cancelText: "Cancel!", top: 100, onClose: () => {
-                onCloseHandler(args)
-            }, //
-            onShow: () => {
-                onShowHandler(args)
+        navigate("/event/create", {
+            state: {
+                "start": args.start, "end": DayPilot.Date.parse(args.end, "yyyy-MM-ddTHH:mm:ss").addMinutes(30)
             }
         });
 
-        dp.clearSelection();
+        // modal.then(modalArgs => {
+        //     console.log("modalArgs", modalArgs);
+        //     console.log("modalArgs canceled", modalArgs.canceled);
+        //     if (modalArgs.canceled) {
+        //         return;
+        //     }
+        //
+        //     // navigate("/event/create");
+        //     // todo: event or   modalArgs.result
+        //     // return createEvents(event);
+        // })
+        //     .then(response => {
+        //         let event = response.data;
+        //         console.log("RESPONSE: create event", event);
+        //         let mapJsonToDayPilotEvent = (json) => {
+        //             const dateFormat: string = "yyyy-MM-ddTHH:mm:ss";
+        //             let map: Map = new Map(Object.entries(json));
+        //             let id: number = map.get('id');
+        //             let text: string = map.get('text');
+        //             let start: string = map.get('start');
+        //             let end: string = map.get('end');
+        //             return {
+        //                 id: id,
+        //                 text: text,
+        //                 start: DayPilot.Date.parse(start, dateFormat),
+        //                 end: DayPilot.Date.parse(end, dateFormat)
+        //             }
+        //         };
+        //         return mapJsonToDayPilotEvent(event);
+        //     }).then(mappedEvent => {
+        //     setEvents([...events, mappedEvent])
+        // })
 
-        modal.then(modalArgs => {
-            console.log("modalArgs", modalArgs);
-            console.log("modalArgs canceled", modalArgs.canceled);
-            if (modalArgs.canceled) {
-                return;
-            }
 
-            navigate("/event/create");
-            // todo: event or   modalArgs.result
-            return createEvents(event);
-        }).then(response => {
-            let event = response.data;
-            console.log("RESPONSE: create event", event);
-            let mapJsonToDayPilotEvent = (json) => {
-                const dateFormat: string = "yyyy-MM-ddTHH:mm:ss";
-                let map: Map = new Map(Object.entries(json));
-                let id: number = map.get('id');
-                let text: string = map.get('text');
-                let start: string = map.get('start');
-                let end: string = map.get('end');
-                return {
-                    id: id,
-                    text: text,
-                    start: DayPilot.Date.parse(start, dateFormat),
-                    end: DayPilot.Date.parse(end, dateFormat)
-                }
-            };
-            return mapJsonToDayPilotEvent(event);
-        }).then(mappedEvent => {
-            setEvents([...events, mappedEvent])
-        })
+        // const event = {
+        //     start: args.start, end: DayPilot.Date.parse(args.end, "yyyy-MM-ddTHH:mm:ss").addMinutes(30), text: args.text
+        // };
+        //
+        // if (event.text === '') {
+        //     return;
+        // }
 
-
-        const event = {
-            start: args.start, end: DayPilot.Date.parse(args.end, "yyyy-MM-ddTHH:mm:ss").addMinutes(30), text: args.text
-        };
-
-        if (event.text === '') {
-            return;
-        }
-
-        const createEvents = async (event) => {
-            const {data, error} = await apiCreateEvents(event);
-            return {data, error};
-        }
+        // const createEvents = async (event) => {
+        //     const {data, error} = await apiCreateEvents(event);
+        //     return {data, error};
+        // }
 
 
     };
@@ -177,8 +163,9 @@ const Calendar = () => {
     return (<div className={"container"}>
         <div className={"navigator"}>
             <DayPilotNavigator
-                // locale={'ru-ru'}
+                locale={'ru-ru'}
                 selectMode={view}
+                weekStarts={1}
                 showMonths={2}
                 skipMonths={2}
                 onTimeRangeSelected={args => setStartDate(args.day)}
@@ -199,8 +186,9 @@ const Calendar = () => {
 
             <DayPilotCalendar
                 viewType={"Day"}
+                locale={'ru-ru'}
                 eventDeleteHandling={"Update"}
-                headerDateFormat={"dd.MM.yyyy"}
+                headerDateFormat={"dddd dd.MM.yyyy"}
                 startDate={startDate}
                 timeFormat={"Clock24Hours"}
                 onEventMove={onEventMoveOrResizeHandler}
@@ -214,25 +202,30 @@ const Calendar = () => {
             />
             <DayPilotCalendar
                 viewType={"Week"}
+                locale={'ru-ru'}
                 eventDeleteHandling={"Update"}
-                headerDateFormat={"dd.MM.yyyy"}
+                // header customization: https://doc.daypilot.org/calendar/column-header-customization/
+                headerDateFormat={"dd.MM.yyyy dddd"}
+                headerHeight={50}
+                headerTextWrappingEnabled={true}
                 onEventMove={onEventMoveOrResizeHandler}
                 onEventDelete={onEventDeleteHandler}
                 onEventResize={onEventMoveOrResizeHandler}
                 onEventClick={onEventClickHandler}
                 onEventRightClick={onEventRightClickHandler}
                 weekStarts={1}
+                days={1}
+                durationBarVisible={true}
                 timeFormat={"Clock24Hours"}
                 startDate={startDate}
-                events={events}
                 visible={view === "Week"}
-                durationBarVisible={false}
                 onTimeRangeSelected={onTimeRangeSelected}
                 controlRef={setWeekView}
             />
             <DayPilotMonth
                 startDate={startDate}
                 eventDeleteHandling={"Update"}
+                locale={'ru-ru'}
                 onEventMove={onEventMoveOrResizeHandler}
                 onEventDelete={onEventDeleteHandler}
                 onEventResize={onEventMoveOrResizeHandler}

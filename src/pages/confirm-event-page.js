@@ -2,24 +2,39 @@ import React from "react";
 
 import {PageLayout} from "../components/page-layout";
 import {useLocation, useNavigate} from "react-router-dom";
+import {DayPilot} from "@daypilot/daypilot-lite-react";
 
 export const ConfirmEventPage = () => {
 
     const navigate = useNavigate()
-    const location = useLocation();
+    const {state} = useLocation();
+
+    const startDateTime = DayPilot.Date.parse(state.start.value, "yyyy-MM-ddTHH:mm:ss");
+    const startDate = startDateTime.toString("yyyy-MM-dd");
+    const startTime = startDateTime.toString("HH:mm");
+    const day = startDateTime.toString("dddd");
+    const endDateTime = DayPilot.Date.parse(state.end.value, "yyyy-MM-ddTHH:mm:ss");
 
     const handleCreate = async () => {
         navigate("/calendar");
     };
 
     const handleBack = async () => {
-        let page = location.state.clientPage;
+        let page = state.clientPage;
         if (page === 'CREATE_CLIENT') {
-            navigate("/client/create");
+            navigate("/client/create", {
+                state: {
+                    "start": startDateTime, "end": endDateTime
+                }
+            });
             return;
         }
         if (page === 'SEARCH_CLIENT') {
-            navigate("/client/search");
+            navigate("/client/search", {
+                state: {
+                    "start": startDateTime, "end": endDateTime
+                }
+            });
             return;
         }
         navigate("/calendar");
@@ -36,10 +51,9 @@ export const ConfirmEventPage = () => {
             </h1>
             <div className="content__body">
                 <p>Client: Cat Animal</p>
-                <p>Date: 01.02.2024</p>
-                <p>Time: 11:00</p>
-                <p>Duration: 1 hour</p>
-
+                <p>Date: {startDate}</p>
+                <p>Day: {day}</p>
+                <p>Time: {startTime}</p>
                 <p></p>
                 <button className="button__logout" onClick={handleCreate}>
                     Create

@@ -1,18 +1,29 @@
 import React from "react";
 
 import {PageLayout} from "../components/page-layout";
-import {useNavigate} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
+import {DayPilot} from "@daypilot/daypilot-lite-react";
 
 export const SearchClientPage = () => {
 
     const navigate = useNavigate()
+    const {state} = useLocation();
+
+    const startDateTime = DayPilot.Date.parse(state.start.value, "yyyy-MM-ddTHH:mm:ss");
+    const endDateTime = DayPilot.Date.parse(state.end.value, "yyyy-MM-ddTHH:mm:ss");
 
     const handleNext = async () => {
-        navigate("/event/confirm", {state: {"clientPage": "SEARCH_CLIENT"}});
+        navigate("/event/confirm", {
+            state: {"clientPage": "SEARCH_CLIENT", "start": startDateTime, "end": endDateTime}
+        });
     };
 
     const handleBack = async () => {
-        navigate("/client/add");
+        navigate("/event/create", {
+            state: {
+                "start": startDateTime, "end": endDateTime
+            }
+        });
     };
 
     const handleCancel = async () => {
