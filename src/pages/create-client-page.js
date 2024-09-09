@@ -8,7 +8,6 @@ export const CreateClientPage = () => {
 
     const navigate = useNavigate();
     const {state} = useLocation();
-
     const startDateTime = DayPilot.Date.parse(state.start.value, "yyyy-MM-ddTHH:mm:ss");
     const endDateTime = DayPilot.Date.parse(state.end.value, "yyyy-MM-ddTHH:mm:ss");
 

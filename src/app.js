@@ -32,11 +32,11 @@ export const App = () => {
             element={<AuthenticationGuard component={ProfilePage}/>}
         />
         <Route path="/public" element={<PublicPage/>}/>
+        <Route path="/calendar" element={<CalendarPage/>}/>
         <Route path="/event/confirm" element={<ConfirmEventPage/>}/>
         <Route path="/event/create" element={<CreateEventPage/>}/>
         <Route path="/client/create" element={<CreateClientPage/>}/>
         <Route path="/client/search" element={<SearchClientPage/>}/>
-        <Route path="/calendar" element={<CalendarPage/>}/>
         <Route
             path="/protected"
             element={<AuthenticationGuard component={ProtectedPage}/>}

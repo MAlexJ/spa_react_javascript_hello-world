@@ -5,10 +5,8 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {DayPilot} from "@daypilot/daypilot-lite-react";
 
 export const ConfirmEventPage = () => {
-
     const navigate = useNavigate()
     const {state} = useLocation();
-
     const startDateTime = DayPilot.Date.parse(state.start.value, "yyyy-MM-ddTHH:mm:ss");
     const startDate = startDateTime.toString("yyyy-MM-dd");
     const startTime = startDateTime.toString("HH:mm");

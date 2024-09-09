@@ -7,7 +7,6 @@ import {useNavigate} from "react-router-dom";
 const Calendar = () => {
 
     const navigate = useNavigate()
-
     const [view, setView] = useState("Week");
     const [startDate, setStartDate] = useState(DayPilot.Date.today());
     const [events, setEvents] = useState([]);
