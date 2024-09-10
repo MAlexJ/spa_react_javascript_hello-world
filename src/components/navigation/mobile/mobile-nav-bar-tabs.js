@@ -12,7 +12,7 @@ export const MobileNavBarTabs = ({handleClick}) => {
             label="Profile"
             handleClick={handleClick}
         />
-        <NavBarTab
+        <MobileNavBarTab
             path="/calendar"
             label="Calendar"
             handleClick={handleClick}
