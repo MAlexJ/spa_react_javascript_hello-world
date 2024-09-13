@@ -1,7 +1,6 @@
 import {useAuth0} from "@auth0/auth0-react";
 import React from "react";
 import {MobileNavBarTab} from "./mobile-nav-bar-tab";
-import {NavBarTab} from "../desktop/nav-bar-tab";
 
 export const MobileNavBarTabs = ({handleClick}) => {
     const {isAuthenticated} = useAuth0();
@@ -13,13 +12,13 @@ export const MobileNavBarTabs = ({handleClick}) => {
             handleClick={handleClick}
         />
         <MobileNavBarTab
-            path="/calendar"
-            label="Calendar"
+            path="/public"
+            label="Public"
             handleClick={handleClick}
         />
         <MobileNavBarTab
-            path="/public"
-            label="Public"
+            path="/calendar"
+            label="Calendar"
             handleClick={handleClick}
         />
         {isAuthenticated && (<>

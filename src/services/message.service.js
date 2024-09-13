@@ -101,3 +101,18 @@ export const apiCreateEvents = async (event) => {
         data: data || null, error,
     };
 };
+
+export const apiCreateClients = async (client) => {
+
+    const config = {
+        url: `${apiServerUrl}/api/v1/clients`, method: "POST", headers: {
+            "content-type": "application/json",
+        }, data: client
+    };
+
+    const {data, error} = await callExternalApi({config});
+
+    return {
+        data: data || null, error,
+    };
+};

@@ -204,7 +204,7 @@ const Calendar = () => {
                 locale={'ru-ru'}
                 eventDeleteHandling={"Update"}
                 // header customization: https://doc.daypilot.org/calendar/column-header-customization/
-                headerDateFormat={"dd.MM.yyyy dddd"}
+                headerDateFormat={"dd.MM.yyyy"}
                 headerHeight={50}
                 headerTextWrappingEnabled={true}
                 onEventMove={onEventMoveOrResizeHandler}
@@ -213,10 +213,13 @@ const Calendar = () => {
                 onEventClick={onEventClickHandler}
                 onEventRightClick={onEventRightClickHandler}
                 weekStarts={1}
+
+                // showToolTip={true}
                 days={1}
-                durationBarVisible={true}
+                // durationBarVisible={true}
                 timeFormat={"Clock24Hours"}
                 startDate={startDate}
+                events={events}
                 visible={view === "Week"}
                 onTimeRangeSelected={onTimeRangeSelected}
                 controlRef={setWeekView}

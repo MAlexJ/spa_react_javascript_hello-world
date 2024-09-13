@@ -84,3 +84,66 @@ But what if you don't want that data to show in your URL?
 Here's a great way to achieve that using the useLocation hook that React Router provides.
 
 link: https://dev.to/olabisi09/how-to-pass-data-across-routes-with-react-router-53jm
+
+#### hook: useState
+
+Two way binding more than one input in React Hooks
+
+link: https://stackoverflow.com/questions/61373904/two-way-binding-more-than-one-input-in-react-w-hooks
+
+The hooks and handler:
+
+```
+const [message, setMessage] = useState("");
+const [newUser, setNewUser] = useState("");
+const handleChange = e =>
+    e.target.name === "message"
+        ? setMessage(e.target.value)
+        : e.target.name === "user"
+        ? setNewUser(e.target.value)
+        : "";
+```
+
+The inputs:
+
+```
+<input name="message" value={message} onChange={handleChange} />
+<input name="user" value={newUser} onChange={handleChange} />
+```
+
+two options:
+
+```
+import React, { useState } from "react";
+import "./styles.css";
+
+export default function App() {
+    const [message, setMessage] = useState("");
+    const [newUser, setNewUser] = useState("");
+
+    const handleChange = e =>
+        e.target.name === "message"
+            ? setMessage(e.target.value)
+            : e.target.name === "user"
+            ? setNewUser(e.target.value)
+            : "";
+
+    const [message2, setMessage2] = useState("");
+    const [newUser2, setNewUser2] = useState("");
+    const handleChange2 = (e, name) =>
+        name === "message" ? setMessage2(e.target.value) : name === "user" ? setNewUser2(e.target.value) : "";
+
+    return (
+        <div className="App">
+            <h2>Option 1</h2>
+            <input name="message" value={message} onChange={handleChange} />
+            <input name="user" value={newUser} onChange={handleChange} />
+            <hr />
+            <h2>Option 2</h2>
+            <input value={message2} onChange={e => handleChange2(e, "message")} />
+            <input value={newUser2} onChange={e => handleChange2(e, "user")} />
+            <hr />
+        </div>
+    );
+}
+```
