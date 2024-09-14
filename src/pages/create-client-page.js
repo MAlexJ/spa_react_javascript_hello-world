@@ -83,46 +83,86 @@ export const CreateClientPage = () => {
 
     return (<PageLayout>
         <div className="content-layout">
+
             <h1 id="page-title" className="content__title">
                 Add a new client
             </h1>
+
             <div className="content__body">
+
                 First name:
+
                 <input
                     value={firstName}
                     onChange={e => handleChange(e, "firstName")}
                     type="text"/>
+
                 <p></p>
+
                 Second name:
+
                 <input
                     value={lastName}
                     onChange={e => handleChange(e, "lastName")}
                     type="text"/>
+
                 <p></p>
+
                 Phone number:
+
                 <input
                     value={phoneNumber}
                     onChange={e => handleChange(e, "phoneNumber")}
                     type="phone"/>
+
                 <p></p>
+
                 Additional info:
+
                 <input
                     value={info}
                     onChange={e => handleChange(e, "info")}
                     type="text"/>
+
                 <p></p>
-                <button className="button__login" onClick={handleNext}>
+
+                <p>Test data:</p>
+
+                <pre>
+                 {JSON.stringify(state, null, 2)}
+                </pre>
+
+                <pre>
+                 {JSON.stringify(client, null, 2)}
+                </pre>
+
+                <p></p>
+
+                <button
+                    className="button__login"
+                    onClick={handleNext}>
                     Next
                 </button>
+
                 <p></p>
-                <button className="button__sign-up" onClick={handleBack}>
+
+                <button
+                    className="button__sign-up"
+                    onClick={handleBack}>
                     Back
                 </button>
+
                 <p></p>
-                <button className="button__cancel" onClick={handleCancel}>
+
+                <button
+                    className="button__cancel"
+                    onClick={handleCancel}>
                     Cancel
                 </button>
+
             </div>
+
         </div>
+
     </PageLayout>);
 }

@@ -71,22 +71,37 @@ export const ConfirmEventPage = () => {
             </h1>
             <div className="content__body">
                 <p><b>Client</b></p>
-                <p>id: {state.client.id}</p>
                 <p>Full name: {state.client.firstName} {state.client.lastName}</p>
                 <p><b>Event</b></p>
                 <p>Date: {startDate}</p>
                 <p>Day: {day}</p>
                 <p>Time: {startTime}</p>
                 <p></p>
-                <button className="button__logout" onClick={handleCreate}>
+
+                <pre>
+                 {JSON.stringify(state, null, 2)}
+                </pre>
+
+
+                <button
+                    className="button__logout"
+                    onClick={handleCreate}>
                     Create
                 </button>
+
                 <p></p>
-                <button className="button__sign-up" onClick={handleBack}>
+
+                <button
+                    className="button__sign-up"
+                    onClick={handleBack}>
                     Back
                 </button>
+
                 <p></p>
-                <button className="button__cancel" onClick={handleCancel}>
+
+                <button
+                    className="button__cancel"
+                    onClick={handleCancel}>
                     Cancel
                 </button>
             </div>

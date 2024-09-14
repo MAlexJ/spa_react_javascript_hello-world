@@ -6,19 +6,19 @@ export const MobileNavBarTabs = ({handleClick}) => {
     const {isAuthenticated} = useAuth0();
 
     return (<div className="mobile-nav-bar__tabs">
+        {/*<MobileNavBarTab*/}
+        {/*    path="/profile"*/}
+        {/*    label="Profile"*/}
+        {/*    handleClick={handleClick}*/}
+        {/*/>*/}
         <MobileNavBarTab
-            path="/profile"
-            label="Profile"
+            path="/calendar"
+            label="Events"
             handleClick={handleClick}
         />
         <MobileNavBarTab
             path="/public"
-            label="Public"
-            handleClick={handleClick}
-        />
-        <MobileNavBarTab
-            path="/calendar"
-            label="Calendar"
+            label="Clients"
             handleClick={handleClick}
         />
         {isAuthenticated && (<>

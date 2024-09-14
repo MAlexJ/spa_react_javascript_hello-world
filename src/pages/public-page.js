@@ -1,56 +1,115 @@
-import React, { useEffect, useState } from "react";
-import { CodeSnippet } from "../components/code-snippet";
-import { PageLayout } from "../components/page-layout";
-import { getPublicResource } from "../services/message.service";
+import React, {useEffect, useMemo, useState} from "react";
+import {PageLayout} from "../components/page-layout";
+import {apiFindAllClients} from "../services/message.service";
+import {MaterialReactTable, type MRT_ColumnDef, useMaterialReactTable} from 'material-react-table';
+import {createTheme, ThemeProvider, useTheme} from '@mui/material';
+
+type Client = {
+    firstName: string; //
+    lastName: string; //
+    phoneNumber: string; //
+    info: string;
+};
+
+const columns: MRT_ColumnDef<Client>[] = [ //
+    {
+        accessorKey: 'id', header: 'Id'
+    }, //
+    {
+        accessorKey: 'firstName', header: 'First Name',
+    }, //
+    {
+        accessorKey: 'lastName', header: 'Last Name',
+    }, //
+    {
+        accessorKey: 'phoneNumber', header: 'Phone Number',
+    }, //
+    {
+        accessorKey: 'info', header: 'Info',
+    } //
+];
 
 export const PublicPage = () => {
-  const [message, setMessage] = useState("");
 
-  useEffect(() => {
-    let isMounted = true;
+    const [clients, setClients] = useState("");
 
-    const getMessage = async () => {
-      const { data, error } = await getPublicResource();
+    const globalTheme = useTheme(); //(optional) if you already have a theme defined in your app root, you can import here
 
-      if (!isMounted) {
-        return;
-      }
+    const tableTheme = useMemo(() => createTheme({
+        palette: {
+            mode: globalTheme.palette.mode, //let's use the same dark/light mode as the global theme
+            primary: globalTheme.palette.secondary, //swap in the secondary color as the primary for the table
+            info: {
+                main: 'rgb(255,122,0)', //add in a custom color for the toolbar alert background stuff
+            }, background: {
+                default: globalTheme.palette.mode === 'light' ? 'rgb(254,255,244)' //random light yellow color for the background in light mode
+                    : '#000', //pure black table in dark mode for fun
+            },
+        }, typography: {
+            button: {
+                textTransform: 'none', //customize typography styles for all buttons in table by default
+                fontSize: '2.2rem',
+            },
+        }, components: {
+            MuiTooltip: {
+                styleOverrides: {
+                    tooltip: {
+                        fontSize: '2.2rem', //override to make tooltip font size larger
+                    },
+                },
+            }, MuiTableCell: {
+                fontSize: '10rem',
+            }, MuiSwitch: {
+                styleOverrides: {
+                    thumb: {
+                        color: 'pink', //change the color of the switch thumb in the columns show/hide menu to pink
+                    },
+                },
+            },
+        },
+    }), [globalTheme],);
 
-      if (data) {
-        setMessage(JSON.stringify(data, null, 2));
-      }
+    const table = useMaterialReactTable({
+        columns, //
+        data: clients, //
+        enableRowSelection: true, //
+        enableColumnOrdering: true, //
+        enableColumnPinning: true //
+    });
 
-      if (error) {
-        setMessage(JSON.stringify(error, null, 2));
-      }
-    };
+    useEffect(() => {
+        const findAllClients = async () => {
+            const {data, error} = await apiFindAllClients();
 
-    getMessage();
+            if (data) {
+                return data;
+            }
 
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+            if (error) {
+                console.error(error);
+            }
+        };
 
-  return (
-    <PageLayout>
-      <div className="content-layout">
-        <h1 id="page-title" className="content__title">
-          Public Page
-        </h1>
-        <div className="content__body">
-          <p id="page-description">
-            <span>
-              This page retrieves a <strong>public message</strong> from an
-              external API.
-            </span>
-            <span>
-              <strong>Any visitor can access this page.</strong>
-            </span>
-          </p>
-          <CodeSnippet title="Public Message" code={message} />
+        findAllClients()
+            .then(clients => {
+                setClients(clients);
+            });
+    }, []);
+
+    return (<PageLayout>
+        <div className="content-layout">
+            <h1 id="page-title" className="content__title">
+                Clients Page
+            </h1>
+            <div className="content__body">
+                <ThemeProvider theme={tableTheme}>
+                    <MaterialReactTable table={table}/>
+                </ThemeProvider>
+            </div>
+
+            <pre>
+                 {JSON.stringify(clients, null, 2)}
+            </pre>
         </div>
-      </div>
-    </PageLayout>
-  );
+    </PageLayout>);
 };

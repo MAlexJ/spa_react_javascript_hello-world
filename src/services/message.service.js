@@ -102,6 +102,21 @@ export const apiCreateEvents = async (event) => {
     };
 };
 
+
+export const apiFindAllClients = async () => {
+    const config = {
+        url: `${apiServerUrl}/api/v1/clients`, method: "GET", headers: {
+            "content-type": "application/json",
+        },
+    };
+
+    const {data, error} = await callExternalApi({config});
+
+    return {
+        data: data || null, error,
+    };
+};
+
 export const apiCreateClients = async (client) => {
 
     const config = {

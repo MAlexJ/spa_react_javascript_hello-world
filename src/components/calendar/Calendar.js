@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {DayPilot, DayPilotCalendar, DayPilotMonth, DayPilotNavigator} from "@daypilot/daypilot-lite-react";
 import {apiDeleteEvents, apiFindEvents, apiPartialUpdate} from "../../services/message.service";
-import "./Calendar.css";
 import {useNavigate} from "react-router-dom";
+import "./Calendar.css";
 
 const Calendar = () => {
 
@@ -26,17 +26,6 @@ const Calendar = () => {
             }
         });
 
-        // modal.then(modalArgs => {
-        //     console.log("modalArgs", modalArgs);
-        //     console.log("modalArgs canceled", modalArgs.canceled);
-        //     if (modalArgs.canceled) {
-        //         return;
-        //     }
-        //
-        //     // navigate("/event/create");
-        //     // todo: event or   modalArgs.result
-        //     // return createEvents(event);
-        // })
         //     .then(response => {
         //         let event = response.data;
         //         console.log("RESPONSE: create event", event);
@@ -58,22 +47,6 @@ const Calendar = () => {
         //     }).then(mappedEvent => {
         //     setEvents([...events, mappedEvent])
         // })
-
-
-        // const event = {
-        //     start: args.start, end: DayPilot.Date.parse(args.end, "yyyy-MM-ddTHH:mm:ss").addMinutes(30), text: args.text
-        // };
-        //
-        // if (event.text === '') {
-        //     return;
-        // }
-
-        // const createEvents = async (event) => {
-        //     const {data, error} = await apiCreateEvents(event);
-        //     return {data, error};
-        // }
-
-
     };
 
     const onEventMoveOrResizeHandler = async (args) => {
@@ -99,56 +72,41 @@ const Calendar = () => {
 
     const onEventDeleteHandler = async (args) => {
         let id: number = args.e.data.id;
-        console.log("Delete event by id", id);
-
 
         const deleteEvents = async (id) => {
             const {data, error} = await apiDeleteEvents(id);
             return {data, error};
         };
 
-        deleteEvents(id).then((resp) => {
-            console.log("RESPONSE: Delete event by id", resp.data);
-        });
+        const {data, error} = await deleteEvents(id);
 
-    }
+        if (data || data === null) {
+            console.log("RESPONSE: Delete event by id");
+        }
 
-    const okTextHandler = async (args) => {
-        console.log("okTextHandler", args);
-    }
-
-    const onShowHandler = async (args) => {
-        console.log("onShowHandler", args);
-    }
-
-    const onCloseHandler = async (args) => {
-        console.log("onCloseHandler", args);
-    }
-
-    const onEventClickHandler = async (args) => {
-        console.log("onEventClick", args);
-    }
-
-    const onEventRightClickHandler = async (args) => {
-        console.log("onEventRightClickHandler", args);
+        if (error) {
+            console.error(error)
+        }
     }
 
     useEffect(() => {
         const findEvents = async () => {
+
             const {data, error} = await apiFindEvents();
 
             if (data) {
-                return Object.keys(data).map(index => {
-                    let event = data[index];
-                    return {
-                        id: event.id,
-                        text: event.text,
-                        start: DayPilot.Date.parse(event.start, "yyyy-MM-ddTHH:mm:ss"),
-                        end: DayPilot.Date.parse(event.end, "yyyy-MM-ddTHH:mm:ss"),
-                        backColor: event.backColor,
-                        borderColor: event.borderColor
-                    }
-                })
+                return Object.keys(data)
+                    .map(index => {
+                        let event = data[index];
+                        return {
+                            id: event.id,
+                            text: event.text,
+                            start: DayPilot.Date.parse(event.start, "yyyy-MM-ddTHH:mm:ss"),
+                            end: DayPilot.Date.parse(event.end, "yyyy-MM-ddTHH:mm:ss"),
+                            backColor: event.backColor,
+                            borderColor: event.borderColor
+                        }
+                    })
             }
 
             if (error) {
@@ -160,7 +118,9 @@ const Calendar = () => {
     }, []);
 
     return (<div className={"container"}>
+
         <div className={"navigator"}>
+
             <DayPilotNavigator
                 locale={'ru-ru'}
                 selectMode={view}
@@ -170,17 +130,40 @@ const Calendar = () => {
                 onTimeRangeSelected={args => setStartDate(args.day)}
                 events={events}
             />
+
         </div>
+
         <div className={"content"}>
+
             <div className={"toolbar"}>
+
                 <div className={"toolbar-group"}>
-                    <button onClick={() => setView("Day")} className={view === "Day" ? "selected" : ""}>Day</button>
-                    <button onClick={() => setView("Week")} className={view === "Week" ? "selected" : ""}>Week
+
+                    <button
+                        className={view === "Day" ? "selected" : ""}
+                        onClick={() => setView("Day")}>
+                        Day
                     </button>
-                    <button onClick={() => setView("Month")} className={view === "Month" ? "selected" : ""}>Month
+
+                    <button
+                        className={view === "Week" ? "selected" : ""}
+                        onClick={() => setView("Week")}>
+                        Week
+                    </button>
+
+                    <button
+                        className={view === "Month" ? "selected" : ""}
+                        onClick={() => setView("Month")}>
+                        Month
                     </button>
                 </div>
-                <button onClick={() => setStartDate(DayPilot.Date.today())} className={"standalone"}>Today</button>
+
+                <button
+                    className={"standalone"}
+                    onClick={() => setStartDate(DayPilot.Date.today())}>
+                    Today
+                </button>
+
             </div>
 
             <DayPilotCalendar
@@ -188,8 +171,8 @@ const Calendar = () => {
                 locale={'ru-ru'}
                 eventDeleteHandling={"Update"}
                 headerDateFormat={"dddd dd.MM.yyyy"}
-                startDate={startDate}
                 timeFormat={"Clock24Hours"}
+                startDate={startDate}
                 onEventMove={onEventMoveOrResizeHandler}
                 onEventDelete={onEventDeleteHandler}
                 onEventResize={onEventMoveOrResizeHandler}
@@ -199,6 +182,7 @@ const Calendar = () => {
                 onTimeRangeSelected={onTimeRangeSelected}
                 controlRef={setDayView}
             />
+
             <DayPilotCalendar
                 viewType={"Week"}
                 locale={'ru-ru'}
@@ -210,10 +194,7 @@ const Calendar = () => {
                 onEventMove={onEventMoveOrResizeHandler}
                 onEventDelete={onEventDeleteHandler}
                 onEventResize={onEventMoveOrResizeHandler}
-                onEventClick={onEventClickHandler}
-                onEventRightClick={onEventRightClickHandler}
                 weekStarts={1}
-
                 // showToolTip={true}
                 days={1}
                 // durationBarVisible={true}
@@ -224,10 +205,11 @@ const Calendar = () => {
                 onTimeRangeSelected={onTimeRangeSelected}
                 controlRef={setWeekView}
             />
+
             <DayPilotMonth
                 startDate={startDate}
-                eventDeleteHandling={"Update"}
                 locale={'ru-ru'}
+                eventDeleteHandling={"Update"}
                 onEventMove={onEventMoveOrResizeHandler}
                 onEventDelete={onEventDeleteHandler}
                 onEventResize={onEventMoveOrResizeHandler}
@@ -238,7 +220,9 @@ const Calendar = () => {
                 onTimeRangeSelected={onTimeRangeSelected}
                 controlRef={setMonthView}
             />
+
         </div>
+
     </div>);
 }
 
