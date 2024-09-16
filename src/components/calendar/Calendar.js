@@ -117,7 +117,7 @@ const Calendar = () => {
         findEvents().then(jsonArray => setEvents(jsonArray))
     }, []);
 
-    return (<div className={"auth0-features__grid"}>
+    return (<div className={"container"}>
 
         <div className={"navigator"}>
 
