@@ -11,13 +11,13 @@ export const MobileNavBarButtons = () => {
     <div className="mobile-nav-bar__buttons">
       {!isAuthenticated && (
         <>
-          <SignupButton />
-          <LoginButton />
+          {/*<SignupButton />*/}
+          {/*<LoginButton />*/}
         </>
       )}
       {isAuthenticated && (
         <>
-          <LogoutButton />
+          {/*<LogoutButton />*/}
         </>
       )}
     </div>
