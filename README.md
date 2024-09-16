@@ -8,6 +8,7 @@ app: ["Full-Stack Security: React/JavaScript + Spring WebFlux/Java](https://deve
 create .env file with properties:
 
 ```
+REACT_APP_ROUTE=http://localhost:3000
 REACT_APP_AUTH0_DOMAIN=.....dev......
 REACT_APP_AUTH0_CLIENT_ID=....ID.....
 REACT_APP_AUTH0_CALLBACK_URL=....my.site.com/callback
@@ -74,6 +75,16 @@ timeFormat
 https://api.daypilot.org/daypilot-date-parse/
 
 ### React
+
+#### component: BrowserRouter
+
+basename: string
+
+The base URL for all locations. 
+If your app is served from a sub-directory on your server, you’ll want to set this to the sub-directory. 
+A properly formatted basename should have a leading slash, but no trailing slash.
+
+link: https://v5.reactrouter.com/web/api/BrowserRouter
 
 #### hook: useLocation
 

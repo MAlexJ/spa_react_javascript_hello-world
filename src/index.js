@@ -8,9 +8,11 @@ import "./styles/styles.css";
 const container = document.getElementById("root");
 const root = createRoot(container);
 
+const apiServerUrl = process.env.REACT_APP_ROUTE || '/';
+
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={apiServerUrl}>
       <Auth0ProviderWithNavigate>
         <App />
       </Auth0ProviderWithNavigate>
