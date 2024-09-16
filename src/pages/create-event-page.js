@@ -68,11 +68,11 @@ export const CreateEventPage = () => {
 
                 <p></p>
 
-                <button
-                    className="button__login"
-                    onClick={handleExistClient}>
-                    Exist client
-                </button>
+                {/*<button*/}
+                {/*    className="button__login"*/}
+                {/*    onClick={handleExistClient}>*/}
+                {/*    Exist client*/}
+                {/*</button>*/}
 
                 <p></p>
 
