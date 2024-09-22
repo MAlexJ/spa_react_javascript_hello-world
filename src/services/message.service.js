@@ -44,6 +44,21 @@ export const getAdminResource = async () => {
     };
 };
 
+
+export const apiFindApplicationInfo = async () => {
+    const config = {
+        url: `${apiServerUrl}/api/v1/info`, method: "GET", headers: {
+            "content-type": "application/json",
+        },
+    };
+
+    const {data, error} = await callExternalApi({config});
+
+    return {
+        data: data || null, error,
+    };
+};
+
 export const apiFindEvents = async () => {
     const config = {
         url: `${apiServerUrl}/api/v1/events`, method: "GET", headers: {
