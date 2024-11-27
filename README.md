@@ -8,11 +8,11 @@ app: ["Full-Stack Security: React/JavaScript + Spring WebFlux/Java](https://deve
 create .env file with properties:
 
 ```
-REACT_APP_ROUTE=http://localhost:3000
+REACT_APP_API_SERVER_URL=....my.site.com
+
 REACT_APP_AUTH0_DOMAIN=.....dev......
 REACT_APP_AUTH0_CLIENT_ID=....ID.....
 REACT_APP_AUTH0_CALLBACK_URL=....my.site.com/callback
-REACT_APP_API_SERVER_URL=....my.site.com
 REACT_APP_AUTH0_AUDIENCE=....my.site.com
 ```
 
